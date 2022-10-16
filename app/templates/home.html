@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <title>Journalify</title>
+        <!-- Font Awesome icons (free version)-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js" crossorigin="anonymous"></script>
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="../static/css/style.css" rel="stylesheet">
+        <!-- Fonts CSS-->
+        <link rel="stylesheet" href="../static/css/heading.css">
+        <link rel="stylesheet" href="../static/css/body.css">
+        <link rel="icon" href="https://i.ibb.co/7bLPpWr/Instagram-post-1-4.png">
+    </head>
+    <body id="page-top">
+        <nav class="navbar navbar-expand-lg bg-secondary fixed-top" id="mainNav">
+            <div class="container"><a class="navbar-brand js-scroll-trigger" href="/">Journalify</a>
+                <button class="navbar-toggler navbar-toggler-right font-weight-bold text-white rounded" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">Menu <i class="fas fa-bars"></i></button>
+                <div class="collapse navbar-collapse" id="navbarResponsive">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#write">Add Entry</a>
+                        </li>
+                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#journal">Journal</a>
+                        </li>
+                        <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="/logout">Logout</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <header class="masthead bg-primary text-white text-center">
+            <div class="container d-flex align-items-center flex-column">
+                <!-- Masthead Avatar Image--><img class="masthead-avatar mb-5" src="https://i.ibb.co/7bLPpWr/Instagram-post-1-4.png" alt="Journalify">
+                <!-- Icon Divider-->
+                <div class="divider-custom">
+                    <div class="divider-custom-line"></div>
+                    <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
+                    <div class="divider-custom-line"></div>
+                </div>
+                <!-- Masthead Subheading-->
+                <p class="pre-wrap masthead-subheading font-weight-light mb-0">Soundtrack your life, one day at a time.</p>
+            </div>
+        </header>
+
+<!-- WRITE SECTION -->
+
+        <section class="page-section text-secondary mb-0" id="write">
+            <div class="container">
+                <!-- About Section Heading-->
+                <div class="text-center">
+                    <h2 class="page-section-heading d-inline-block">How was your day, {{ user }}?</h2>
+                </div>
+                <!-- Icon Divider-->
+                <div class="divider-custom">
+                    <div class="divider-custom-line"></div>
+                    <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
+                    <div class="divider-custom-line"></div>
+                </div>
+                <!-- Entry Form -->
+                <p>Write about anything that happened today and how you felt!</p>
+                <p style="color: red">{{ explain }}</p>
+                <form method="POST" action="/entry">
+                    <!-- DATE ??? FORMAT ??? -->
+                    <div class="form-floating form-group mb-4">
+                        <input class="form-control" type="date" placeholder="date" id="floatingInput exampleInputUsername1" name="date" required>
+                    </div>
+    
+                    <div class="form-floating form-group mb-4">
+                        <textarea name="entry" class="form-control" rows="15" cols="10" wrap="soft"> </textarea>
+                    </div>
+                    <center>
+                        <div class="form-group">                            
+                            <input type="submit" value="Submit" id="btn-background" class="btn submitbutton"></input>
+                        </div>
+                    </center>
+                </form>
+        </section>
+
+<!-- BLOG ENTRIES SECTION -->
+
+        <section class="page-section portfolio bg-primary" id="journal">
+            <div class="container">
+                <!-- Entries Section Heading-->
+                <div class="text-center">
+                    <h2 class="page-section-heading text-secondary mb-0 d-inline-block">Journal</h2>
+                </div>
+                <!-- Icon Divider-->
+                <div class="divider-custom">
+                    <div class="divider-custom-line"></div>
+                    <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
+                    <div class="divider-custom-line"></div>
+                </div>
+                <!-- Entries Grid Items-->
+                <div class="row justify-content-center">
+                    <!-- All Entries Cover-->
+                    {% for entry in entries %}
+                    <div class="col-md-6 col-lg-4 mb-5">
+                        <div class="portfolio-item mx-auto" data-toggle="modal" data-target="#{{ entry.date.replace(" ", "").replace(",", "") }}">
+                            <div class="portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100">
+                                <div class="portfolio-item-caption-content text-center text-white"><i class="fas fa-plus fa-3x"></i></div>
+                            </div>
+                            <h2>{{entry.date}}</h2>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+
+        <!-- Entries Modal-->
+        {% for entry in entries %}
+        <!-- id should be a single word string with no commas-->
+        <div class="portfolio-modal modal fade" id="{{ entry.date.replace(" ", "").replace(",", "") }}" tabindex="-1" role="dialog" aria-labelledby="#{{entry.date}}Label" aria-hidden="true">
+            <div class="modal-dialog modal-xl" role="document">
+                <div class="modal-content">
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"><i class="fas fa-times"></i></span></button>
+                    <div class="modal-body text-center">
+                        <div class="container">
+                            <div class="row justify-content-center">
+                                <div class="col-lg-8">
+                                    <!-- Entries Modal - Title-->
+                                    <h2 class="portfolio-modal-title text-secondary mb-0">{{entry.date}}</h2>
+                                    <!-- Icon Divider-->
+                                      <div class="divider-custom">
+                                        <div class="divider-custom-line"></div>
+                                        <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
+                                        <div class="divider-custom-line"></div>
+                                    </div>
+                                     <!-- Entries Modal - Image -->
+                                     <!-- ADD SPTOIFY SONG COVER??? -->
+                                    <img class="img-fluid rounded mb-5" src="{{entry.image}}" alt="{{entry.title}}" style="height: 300px"/>
+                                    <!-- Entries Modal - Text-->
+                                    <br>
+                                    <i class="fa fa-music fa-lg" aria-hidden="true"></i><h3><a href="{{ entry.song }}" target="_blank">{{ entry.title }}</a></h3>
+                                    <br><br>
+                                     <p class="mb-5" style="font-size: 20px">
+                                        <!-- loop through a list of paragraphs of the entries -->
+                                        {% for x in entry.summary.split('\n') %}
+                                            {{ x }}
+                                            <br> <!-- new line after each paragraph -->
+                                        {% endfor %}
+                                     </p>
+
+                                    <button class="btn btn-primary" href="#" data-dismiss="modal"><i class="fas fa-times fa-fw"></i>Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+
+<!-- Copyright Section-->
+        <section class="copyright py-4 text-center text-white">
+            <a class="btn btn-outline-light btn-social mx-1" href="https://github.com/annabelng/journalify" target="_blank"><i class="fab fa-github fa-lg"></i></a>
+            <div class="container"><small class="pre-wrap">Copyright © Journalify 2022 </small></div>
+        </section>
+        <!-- Scroll to Top Button (Only visible on small and extra-small screen sizes)-->
+        <div class="scroll-to-top d-lg-none position-fixed"><a class="js-scroll-trigger d-block text-center text-white rounded" href="#page-top"><i class="fa fa-chevron-up"></i></a></div>
+        <!-- Bootstrap core JS-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+        <!-- Third party plugin JS-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
+        <!-- Contact form JS-->
+        <script src="assets/mail/jqBootstrapValidation.js"></script>
+        <script src="assets/mail/contact_me.js"></script>
+        <!-- Core theme JS-->
+        <script src="../static/js/script.js"></script>
+    </body>
+</html>
